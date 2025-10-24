@@ -5,12 +5,12 @@ with customers as (
 top_customers as (
     select 
         customerid,
-        count(orderid) as total_orders
+        count(orderid) as total_orders --display
     from {{ ref('stg_orders') }}
     group by customerid
 )
 
-select
+select DISTINCT
     c.customerid,
     c.customername,
     c.phone,
@@ -19,4 +19,6 @@ select
 from customers c
 left join top_customers tc
     on c.customerid = tc.customerid
-limit 10
+order by
+    total_orders desc  --recently added
+--limit 10
